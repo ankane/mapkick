@@ -160,7 +160,7 @@ Mapkick.options[:height] = "400px"
 
 ## Sinatra and Padrino
 
-Download [mapkick.bundle.js](https://raw.githubusercontent.com/ankane/mapkick/master/vendor/assets/javascripts/mapkick.js) and include it manually.
+Download [mapkick.bundle.js](https://raw.githubusercontent.com/ankane/mapkick/master/vendor/assets/javascripts/mapkick.bundle.js) and include it manually.
 
 ```html
 <script src="mapkick.bundle.js"></script>
