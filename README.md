@@ -82,7 +82,7 @@ In `app/assets/javascripts/application.js`, add:
 Create a map
 
 ```erb
-<%= js_map [{latitude: 1.23, longitude: 4.56}] %>
+<%= js_map [{latitude: 37.7829, longitude: -122.4190}] %>
 ```
 
 ## Data
@@ -90,7 +90,7 @@ Create a map
 Data can be an array
 
 ```erb
-<%= js_map [{latitude: 1.23, longitude: 4.56}] %>
+<%= js_map [{latitude: 37.7829, longitude: -122.4190}] %>
 ```
 
 Or a URL that returns JSON (same format as above)
