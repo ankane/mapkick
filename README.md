@@ -16,7 +16,7 @@ Add this line to your application’s Gemfile:
 gem "mapkick-rb"
 ```
 
-Mapkick uses [Mapbox GL JS v1](https://github.com/mapbox/mapbox-gl-js/tree/v1.13.3). To use tiles from Mapbox, [create a Mapbox account](https://account.mapbox.com/auth/signup/) to get an access token and set `ENV["MAPBOX_ACCESS_TOKEN"]` in your environment.
+Mapkick uses [Mapbox GL JS v1](https://github.com/mapbox/mapbox-gl-js/tree/v1.13.3). To use tiles from Mapbox, [create a Mapbox account](https://account.mapbox.com/auth/signup/) to get an access token and set `ENV["MAPBOX_ACCESS_TOKEN"]` in your environment (or set `Mapkick.options[:access_token]` in an initializer).
 
 Then follow the instructions for your JavaScript setup:
 
