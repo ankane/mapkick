@@ -158,7 +158,7 @@ To set options for all of your maps, create an initializer `config/initializers/
 Mapkick.options[:height] = "400px"
 ```
 
-## Sinatra and Padrino
+## Sinatra, Roda and Padrino
 
 Download [mapkick.bundle.js](https://raw.githubusercontent.com/ankane/mapkick/master/vendor/assets/javascripts/mapkick.bundle.js) and include it manually.
 
