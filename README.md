@@ -166,6 +166,18 @@ Download [mapkick.bundle.js](https://raw.githubusercontent.com/ankane/mapkick/ma
 <script src="mapkick.bundle.js"></script>
 ```
 
+## Roda
+
+Download [mapkick.bundle.js](https://raw.githubusercontent.com/ankane/mapkick/master/vendor/assets/javascripts/mapkick.bundle.js) into your `public` directory and include it manually (`public` [plugin enabled](https://roda.jeremyevans.net/rdoc/classes/Roda/RodaPlugins/Public.html)).
+
+```html
+<script src="/mapkick.bundle.js"></script>
+```
+
+Then `include ::Mapkick::Helper` in your Roda App.
+
+Check out an example Roda app with MapKick [on GitHub](https://github.com/simonneutert/roda-mapkick-example).
+
 ## No Ruby? No Problem
 
 Check out [mapkick.js](https://github.com/ankane/mapkick.js)
