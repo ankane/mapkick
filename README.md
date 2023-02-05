@@ -120,16 +120,22 @@ Id, width, and height
 <%= js_map data, id: "cities-map", width: "800px", height: "500px" %>
 ```
 
-Markers
+Marker color
 
 ```erb
 <%= js_map data, markers: {color: "#f84d4d"} %>
 ```
 
-Tooltips
+Show tooltips on click instead of hover
 
 ```erb
-<%= js_map data, tooltips: {hover: false, html: true} %>
+<%= js_map data, tooltips: {hover: false} %>
+```
+
+Allow HTML in tooltips (must sanitize manually)
+
+```erb
+<%= js_map data, tooltips: {html: true} %>
 ```
 
 Map style
