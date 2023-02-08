@@ -79,10 +79,16 @@ In `app/assets/javascripts/application.js`, add:
 
 ## Maps
 
-Create a map
+Point map
 
 ```erb
 <%= js_map [{latitude: 37.7829, longitude: -122.4190}] %>
+```
+
+Area map (experimental) [unreleased]
+
+```erb
+<%= area_map [{geometry: {type: "Polygon", coordinates: ...}}] %>
 ```
 
 ## Data
@@ -99,14 +105,30 @@ Or a URL that returns JSON (same format as above)
 <%= js_map cities_path %>
 ```
 
-You can use `latitude`, `lat`, `longitude`, `lon`, and `lng`
+### Point Map
+
+Use `latitude` or `lat` for latitude and `longitude`, `lon`, or `lng` for longitude
 
 You can specify a label and tooltip for each data point
 
-```javascript
+```ruby
 {
   latitude: ...,
   longitude: ...,
+  label: "Hot Chicken Takeover",
+  tooltip: "5 stars"
+}
+```
+
+### Area Map
+
+Use `geometry` with a GeoJSON `Polygon` or `MultiPolygon`
+
+You can specify a label and tooltip for each data point
+
+```ruby
+{
+  geometry: {type: "MultiPolygon", coordinates: ...},
   label: "Hot Chicken Takeover",
   tooltip: "5 stars"
 }
@@ -120,10 +142,16 @@ Id, width, and height
 <%= js_map data, id: "cities-map", width: "800px", height: "500px" %>
 ```
 
-Marker color
+Map style
 
 ```erb
-<%= js_map data, markers: {color: "#f84d4d"} %>
+<%= js_map data, style: "mapbox://styles/mapbox/outdoors-v12" %>
+```
+
+Zoom and controls
+
+```erb
+<%= js_map data, zoom: 15, controls: true %>
 ```
 
 Show tooltips on click instead of hover
@@ -138,16 +166,10 @@ Allow HTML in tooltips (must sanitize manually)
 <%= js_map data, tooltips: {html: true} %>
 ```
 
-Map style
+Marker color
 
 ```erb
-<%= js_map data, style: "mapbox://styles/mapbox/outdoors-v12" %>
-```
-
-Zoom and controls
-
-```erb
-<%= js_map data, zoom: 15, controls: true %>
+<%= js_map data, markers: {color: "#f84d4d"} %>
 ```
 
 Refresh data from a remote source every `n` seconds
