@@ -591,13 +591,28 @@
           }
         });
       } else {
+        // TODO make configurable
+        var fillColor = "#0090ff";
+
+        // TODO decide which layer to place above
         map.addLayer({
           id: name,
           source: name,
           type: "fill",
           paint: {
-            "fill-color": "#0090ff",
+            "fill-color": fillColor,
             "fill-opacity": 0.3
+          }
+        });
+
+        map.addLayer({
+          id: (name + "-outline"),
+          source: name,
+          type: "line",
+          paint: {
+            "line-color": fillColor,
+            "line-opacity": 0.7,
+            "line-width": 1
           }
         });
 
