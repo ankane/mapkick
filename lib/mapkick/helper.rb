@@ -1,7 +1,17 @@
 module Mapkick
   module Helper
-    # don't break out options since need to merge with default options
     def js_map(data_source, **options)
+      mapkick_map "Map", data_source, **options
+    end
+
+    def area_map(data_source, **options)
+      mapkick_map "AreaMap", data_source, **options
+    end
+
+    private
+
+    # don't break out options since need to merge with default options
+    def mapkick_map(type, data_source, **options)
       options = Mapkick::Utils.deep_merge(Mapkick.options, options)
 
       @mapkick_map_id ||= 0
@@ -67,6 +77,7 @@ module Mapkick
 
       # js vars
       js_vars = {
+        type: type,
         id: element_id,
         data: data_source,
         options: options
@@ -74,7 +85,7 @@ module Mapkick
       js_vars.each_key do |k|
         js_vars[k] = Mapkick::Utils.json_escape(js_vars[k].to_json)
       end
-      createjs = "new Mapkick.Map(%{id}, %{data}, %{options});" % js_vars
+      createjs = "new Mapkick[%{type}](%{id}, %{data}, %{options});" % js_vars
 
       # don't rerun JS on preview
       js = <<~JS
