@@ -1,7 +1,7 @@
 /*
  * This bundle includes:
  *
- * Mapkick.js v0.2.2
+ * Mapkick.js v0.2.3
  * https://github.com/ankane/mapkick.js
  * MIT License
  *
@@ -405,24 +405,28 @@
       element.textContent = message;
     }
 
+    function errorCatcher(element, data, options, callback) {
+      try {
+        callback(element, data, options);
+      } catch (err) {
+        showError(element, err.message);
+        throw err
+      }
+    }
+
     function fetchData(element, data, options, callback) {
       if (typeof data === "string") {
         getJSON(element, data, function (newData) {
-          callback(element, newData, options);
+          errorCatcher(element, newData, options, callback);
         });
       } else if (typeof data === "function") {
-        try {
-          data(function (newData) {
-            callback(element, newData, options);
-          }, function (message) {
-            showError(element, message);
-          });
-        } catch (err) {
-          showError(element, "Error");
-          throw err
-        }
+        data(function (newData) {
+          errorCatcher(element, newData, options, callback);
+        }, function (message) {
+          showError(element, message);
+        });
       } else {
-        callback(element, data, options);
+        errorCatcher(element, data, options, callback);
       }
     }
 
@@ -455,12 +459,27 @@
           properties.mapkickIconAnchor = properties.icon === "mapkick" ? "bottom" : "center";
           properties.mapkickIconOffset = properties.icon === "mapkick" ? [0, 10] : [0, 0];
 
+          var coordinates = rowCoordinates(row);
+
+          if (!coordinates[1]) {
+            throw new Error(("missing latitude (index: " + i + ")"))
+          }
+
+          if (!coordinates[0]) {
+            throw new Error(("missing longitude (index: " + i + ")"))
+          }
+
           geometry = {
             type: "Point",
-            coordinates: rowCoordinates(row)
+            coordinates: coordinates
           };
         } else {
           geometry = row.geometry;
+
+          if (!geometry) {
+            throw new Error(("missing geometry (index: " + i + ")"))
+          }
+
           delete properties.geometry;
         }
 
@@ -551,6 +570,21 @@
       return geojson
     }
 
+    function layerBeforeFill(map) {
+      // place below labels
+      var layers = map.getStyle().layers;
+      var beforeId;
+      for (var i = layers.length - 1; i >= 0; i--) {
+        var layer = layers[i];
+        // TODO improve
+        if (!(layer.metadata && layer.metadata["mapbox:featureComponent"] === "place-labels")) {
+          break
+        }
+        beforeId = layer.id;
+      }
+      return beforeId
+    }
+
     function addLayer(name, geojson) {
       var centersById = {};
 
@@ -591,10 +625,22 @@
           }
         });
       } else {
-        // TODO make configurable
-        var fillColor = "#0090ff";
+        var fillColor = markerOptions.color || "#0090ff";
 
-        // TODO decide which layer to place above
+        var beforeId = layerBeforeFill(map);
+
+        var outlineId = name + "-outline";
+        map.addLayer({
+          id: outlineId,
+          source: name,
+          type: "line",
+          paint: {
+            "line-color": fillColor,
+            "line-opacity": 0.7,
+            "line-width": 1
+          }
+        }, beforeId);
+
         map.addLayer({
           id: name,
           source: name,
@@ -603,18 +649,7 @@
             "fill-color": fillColor,
             "fill-opacity": 0.3
           }
-        });
-
-        map.addLayer({
-          id: (name + "-outline"),
-          source: name,
-          type: "line",
-          paint: {
-            "line-color": fillColor,
-            "line-opacity": 0.7,
-            "line-width": 1
-          }
-        });
+        }, outlineId);
 
         var labelName = name + "-text";
         var labelData = generateLabelGeoJSON(geojson);
@@ -717,7 +752,9 @@
           popup._container.style.width = popup._container.offsetWidth + 1 + "px";
         }
 
-        panMap(map, popup);
+        if (mapType !== "area") {
+          panMap(map, popup);
+        }
       };
 
       var getLatitude = function (feature) {
