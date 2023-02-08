@@ -142,16 +142,10 @@ Id, width, and height
 <%= js_map data, id: "cities-map", width: "800px", height: "500px" %>
 ```
 
-Map style
+Marker color
 
 ```erb
-<%= js_map data, style: "mapbox://styles/mapbox/outdoors-v12" %>
-```
-
-Zoom and controls
-
-```erb
-<%= js_map data, zoom: 15, controls: true %>
+<%= js_map data, markers: {color: "#f84d4d"} %>
 ```
 
 Show tooltips on click instead of hover
@@ -166,10 +160,16 @@ Allow HTML in tooltips (must sanitize manually)
 <%= js_map data, tooltips: {html: true} %>
 ```
 
-Marker color
+Map style
 
 ```erb
-<%= js_map data, markers: {color: "#f84d4d"} %>
+<%= js_map data, style: "mapbox://styles/mapbox/outdoors-v12" %>
+```
+
+Zoom and controls
+
+```erb
+<%= js_map data, zoom: 15, controls: true %>
 ```
 
 Refresh data from a remote source every `n` seconds
