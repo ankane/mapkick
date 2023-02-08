@@ -85,7 +85,7 @@ Point map
 <%= js_map [{latitude: 37.7829, longitude: -122.4190}] %>
 ```
 
-Area map (experimental) [unreleased]
+Area map (experimental)
 
 ```erb
 <%= area_map [{geometry: {type: "Polygon", coordinates: ...}}] %>
