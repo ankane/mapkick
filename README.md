@@ -128,7 +128,7 @@ You can specify a label and tooltip for each data point
 
 ```ruby
 {
-  geometry: {type: "MultiPolygon", coordinates: ...},
+  geometry: {type: "Polygon", coordinates: ...},
   label: "Hot Chicken Takeover",
   tooltip: "5 stars"
 }
