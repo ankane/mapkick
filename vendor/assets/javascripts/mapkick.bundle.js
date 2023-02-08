@@ -517,7 +517,43 @@
       return geojson
     }
 
+    function generateLabelGeoJSON(data) {
+      var geojson = {
+        type: "FeatureCollection",
+        features: []
+      };
+
+      for (var i = 0; i < data.features.length; i++) {
+        var feature = data.features[i];
+        var coordinates = (void 0);
+
+        // use center for now
+        var bounds = new library.LngLatBounds();
+        extendBounds(bounds, feature.geometry);
+        if (!bounds.isEmpty()) {
+          var center = bounds.getCenter();
+          coordinates = [center.lng, center.lat];
+        }
+
+        if (coordinates) {
+          geojson.features.push({
+            type: "Feature",
+            id: i,
+            geometry: {
+              type: "Point",
+              coordinates: coordinates
+            },
+            properties: feature.properties
+          });
+        }
+      }
+
+      return geojson
+    }
+
     function addLayer(name, geojson) {
+      var centersById = {};
+
       map.addSource(name, {
         type: "geojson",
         data: geojson
@@ -564,7 +600,33 @@
             "fill-opacity": 0.3
           }
         });
-        // TODO add label
+
+        var labelName = name + "-text";
+        var labelData = generateLabelGeoJSON(geojson);
+
+        for (var i = 0; i < labelData.features.length; i++) {
+          var feature = labelData.features[i];
+          centersById[feature.id] = feature.geometry.coordinates;
+        }
+
+        map.addSource(labelName, {
+          type: "geojson",
+          data: labelData
+        });
+
+        map.addLayer({
+          id: (name + "-text"),
+          source: labelName,
+          type: "symbol",
+          layout: {
+            "text-field": "{label}",
+            "text-size": 11
+          },
+          paint: {
+            "text-halo-color": "rgba(255, 255, 255, 1)",
+            "text-halo-width": 1
+          }
+        });
       }
 
       var hover = !("hover" in tooltipOptions) || tooltipOptions.hover;
@@ -599,7 +661,7 @@
         var feature = selectedFeature(e);
         var tooltip = feature.properties.tooltip;
 
-        if (!tooltip || mapType === "area") {
+        if (!tooltip) {
           return
         }
 
@@ -618,8 +680,15 @@
           popup.options.offset = 14;
         }
 
+        var coordinates;
+        if (mapType === "point") {
+          coordinates = feature.geometry.coordinates;
+        } else {
+          coordinates = centersById[feature.id];
+        }
+
         // add the tooltip
-        popup.setLngLat(feature.geometry.coordinates);
+        popup.setLngLat(coordinates);
         if (tooltipOptions.html) {
           popup.setHTML(tooltip);
         } else {
@@ -676,7 +745,7 @@
       map.on("mouseenter", name, function (e) {
         var tooltip = selectedFeature(e).properties.tooltip;
 
-        if (tooltip && mapType !== "area") {
+        if (tooltip) {
           map.getCanvas().style.cursor = "pointer";
 
           if (hover) {
@@ -694,28 +763,31 @@
       });
     }
 
+    function extendBounds(bounds, geometry) {
+      if (geometry.type === "Point") {
+        bounds.extend(geometry.coordinates);
+      } else if (geometry.type === "Polygon") {
+        var coordinates = geometry.coordinates[0];
+        for (var j = 0; j < coordinates.length; j++) {
+          bounds.extend(coordinates[j]);
+        }
+      } else if (geometry.type === "MultiPolygon") {
+        var coordinates$1 = geometry.coordinates;
+        for (var j$1 = 0; j$1 < coordinates$1.length; j$1++) {
+          var polygon = coordinates$1[j$1][0];
+          for (var k = 0; k < polygon.length; k++) {
+            bounds.extend(polygon[k]);
+          }
+        }
+      }
+    }
+
     var generateMap = function (element, data, options) {
       var geojson = generateGeoJSON(data, options);
       options = options || {};
 
       for (var i = 0; i < geojson.features.length; i++) {
-        var geometry = geojson.features[i].geometry;
-        if (geometry.type === "Point") {
-          bounds.extend(geometry.coordinates);
-        } else if (geometry.type === "Polygon") {
-          var coordinates = geometry.coordinates;
-          for (var j = 0; j < coordinates.length; j++) {
-            bounds.extend(coordinates[j]);
-          }
-        } else if (geometry.type === "MultiPolygon") {
-          var coordinates$1 = geometry.coordinates;
-          for (var j$1 = 0; j$1 < coordinates$1.length; j$1++) {
-            var polygon = coordinates$1[j$1];
-            for (var k = 0; k < polygon.length; k++) {
-              bounds.extend(polygon[k]);
-            }
-          }
-        }
+        extendBounds(bounds, geojson.features[i].geometry);
       }
 
       // remove any child elements
