@@ -7,8 +7,12 @@ class MapTest < Minitest::Test
     @data = [{latitude: 1.23, longitude: 4.56}]
   end
 
-  def test_map
+  def test_js_map
     assert_map js_map(@data)
+  end
+
+  def test_area_map
+    assert_map area_map([])
   end
 
   def test_escape_data
