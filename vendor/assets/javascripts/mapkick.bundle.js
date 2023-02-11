@@ -1,7 +1,7 @@
 /*
  * This bundle includes:
  *
- * Mapkick.js v0.2.3
+ * Mapkick.js v0.2.4
  * https://github.com/ankane/mapkick.js
  * MIT License
  *
@@ -260,6 +260,13 @@
     return element
   }
 
+  // check for hex or named color
+  function validateColor(color) {
+    if (!/^#([0-9a-f]{3}){1,2}$/i.test(color) && !/^[a-z]+$/i.test(color)) {
+      throw new Error("Invalid color")
+    }
+  }
+
   function createMarkerImage(library, color) {
     // set height to center vertically
     var height = 41;
@@ -276,10 +283,7 @@
     svg.setAttribute("width", width);
     svg.setAttribute("viewBox", ("0 0 " + width + " " + height));
 
-    // check for hex or named color
-    if (!/^#([0-9a-f]{3}){1,2}$/i.test(color) && !/^[a-z]+$/i.test(color)) {
-      throw new Error("Invalid color")
-    }
+    validateColor(color);
 
     // set color
     svg.querySelector("*[fill='#3FB1CE']").setAttribute("fill", color);
@@ -440,6 +444,9 @@
       });
     }
 
+    // use Map instead of object for security
+    var markerIds = new window.Map();
+
     function generateGeoJSON(data, options) {
       var geojson = {
         type: "FeatureCollection",
@@ -458,6 +465,19 @@
           properties.mapkickIconSize = properties.icon === "mapkick" ? 0.5 : 1;
           properties.mapkickIconAnchor = properties.icon === "mapkick" ? "bottom" : "center";
           properties.mapkickIconOffset = properties.icon === "mapkick" ? [0, 10] : [0, 0];
+
+          if (properties.icon === "mapkick") {
+            var color = properties.color || markerOptions.color || "#f84d4d";
+
+            var markerId = markerIds.get(color);
+            if (markerId === undefined) {
+              markerId = markerIds.size;
+              validateColor(color);
+              markerIds.set(color, markerId);
+            }
+
+            properties.icon = "mapkick-" + markerId;
+          }
 
           var coordinates = rowCoordinates(row);
 
@@ -481,6 +501,9 @@
           }
 
           delete properties.geometry;
+
+          properties.mapkickColor = properties.color || markerOptions.color || "#0090ff";
+
         }
 
         geojson.features.push({
@@ -625,8 +648,6 @@
           }
         });
       } else {
-        var fillColor = markerOptions.color || "#0090ff";
-
         var beforeId = layerBeforeFill(map);
 
         var outlineId = name + "-outline";
@@ -635,7 +656,7 @@
           source: name,
           type: "line",
           paint: {
-            "line-color": fillColor,
+            "line-color": {type: "identity", property: "mapkickColor"},
             "line-opacity": 0.7,
             "line-width": 1
           }
@@ -646,7 +667,7 @@
           source: name,
           type: "fill",
           paint: {
-            "fill-color": fillColor,
+            "fill-color": {type: "identity", property: "mapkickColor"},
             "fill-opacity": 0.3
           }
         }, outlineId);
@@ -715,7 +736,7 @@
           return
         }
 
-        if (feature.properties.icon === "mapkick") {
+        if (mapType === "point" && feature.properties.icon.startsWith("mapkick-")) {
           popup.options.offset = {
             "top": [0, 14],
             "top-left": [0, 14],
@@ -909,10 +930,13 @@
           });
         }
 
-        var color = markerOptions.color || "#f84d4d";
-        var image = createMarkerImage(library, color);
-        image.addEventListener("load", function () {
-          map.addImage("mapkick-15", image);
+        var outstanding = markerIds.size;
+
+        function checkReady() {
+          if (outstanding !== 0) {
+            outstanding--;
+            return
+          }
 
           addLayer("objects", geojson);
 
@@ -921,7 +945,18 @@
           while ((cb = layersReadyQueue.shift())) {
             cb();
           }
+        }
+
+        // load marker images
+        markerIds.forEach(function (id, color) {
+          var image = createMarkerImage(library, color);
+          image.addEventListener("load", function () {
+            map.addImage(("mapkick-" + id + "-15"), image);
+            checkReady();
+          });
         });
+
+        checkReady();
       });
     };
 
