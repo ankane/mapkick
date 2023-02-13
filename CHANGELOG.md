@@ -1,4 +1,4 @@
-## 0.1.3 (unreleased)
+## 0.1.3 (2023-02-13)
 
 - Updated Mapkick.js to 0.2.4
 
