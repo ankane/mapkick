@@ -196,10 +196,6 @@ Download [mapkick.bundle.js](https://raw.githubusercontent.com/ankane/mapkick/ma
 <script src="mapkick.bundle.js"></script>
 ```
 
-## No Ruby? No Problem
-
-Check out [mapkick.js](https://github.com/ankane/mapkick.js)
-
 ## History
 
 View the [changelog](CHANGELOG.md)
