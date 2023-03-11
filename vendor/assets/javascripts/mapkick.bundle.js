@@ -1,7 +1,7 @@
 /*
  * This bundle includes:
  *
- * Mapkick.js v0.2.4
+ * Mapkick.js v0.2.5
  * https://github.com/ankane/mapkick.js
  * MIT License
  *
@@ -876,13 +876,26 @@
         }
       }
 
+      var zoom = options.zoom;
+      var center = options.center;
+      if (!center) {
+        if (!bounds.isEmpty()) {
+          center = bounds.getCenter();
+        } else {
+          center = [0, 0];
+          if (!zoom) {
+            zoom = 1;
+          }
+        }
+      }
+
       var mapOptions = {
         container: element,
         style: style,
         dragRotate: false,
         touchZoomRotate: false,
-        center: options.center || bounds.getCenter(),
-        zoom: options.zoom || 15
+        center: center,
+        zoom: zoom || 15
       };
       if (!options.style) {
         mapOptions.projection = "mercator";
@@ -901,7 +914,10 @@
         if (!map.style.stylesheet) {
           map.style.stylesheet = {};
         }
-        map.fitBounds(bounds, {padding: 40, animate: false, maxZoom: 15});
+
+        if (!bounds.isEmpty()) {
+          map.fitBounds(bounds, {padding: 40, animate: false, maxZoom: 15});
+        }
       }
 
       this$1$1.map = map;
