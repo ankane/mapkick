@@ -4,7 +4,7 @@ Create beautiful JavaScript maps with one line of Ruby. No more fighting with ma
 
 [See it in action](https://chartkick.com/mapkick)
 
-:fire: For charts, check out [Chartkick](https://chartkick.com)
+:fire: For static maps, check out [Mapkick Static](https://chartkick.com/mapkick-static), and for charts, check out [Chartkick](https://chartkick.com)
 
 [![Build Status](https://github.com/ankane/mapkick/workflows/build/badge.svg?branch=master)](https://github.com/ankane/mapkick/actions)
 
