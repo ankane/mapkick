@@ -1,3 +1,7 @@
+## 0.2.0 (2023-03-11)
+
+- Updated Mapkick.js to 0.3.0
+
 ## 0.1.4 (2023-03-11)
 
 - Updated Mapkick.js to 0.2.5

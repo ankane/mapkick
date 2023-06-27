@@ -1,7 +1,7 @@
 /*
  * This bundle includes:
  *
- * Mapkick.js v0.2.5
+ * Mapkick.js v0.3.0
  * https://github.com/ankane/mapkick.js
  * MIT License
  *
@@ -188,13 +188,14 @@
 
   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-  var mapboxGlExports = {};
-  var mapboxGl = {
-    get exports(){ return mapboxGlExports; },
-    set exports(v){ mapboxGlExports = v; },
-  };
+  function getDefaultExportFromCjs (x) {
+  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+  }
+
+  var mapboxGl = {exports: {}};
 
   /* Mapbox GL JS is licensed under the 3-Clause BSD License. Full text of license: https://github.com/mapbox/mapbox-gl-js/blob/v1.13.3/LICENSE.txt */
+  mapboxGl.exports;
 
   (function (module, exports) {
   	(function (global, factory) {
@@ -244,10 +245,11 @@
   	return mapboxgl;
 
   	})));
-  	
-  } (mapboxGl));
 
-  var mapboxgl = mapboxGlExports;
+  } (mapboxGl, mapboxGl.exports));
+
+  var mapboxGlExports = mapboxGl.exports;
+  var mapboxgl = /*@__PURE__*/getDefaultExportFromCjs(mapboxGlExports);
 
   function getElement(element) {
     if (typeof element === "string") {
@@ -902,6 +904,9 @@
       }
       if (options.accessToken) {
         mapOptions.accessToken = options.accessToken;
+      }
+      if (options.hash) {
+        mapOptions.hash = true;
       }
       map = new library.Map(mapOptions);
 

@@ -4,7 +4,7 @@ Create beautiful JavaScript maps with one line of Ruby. No more fighting with ma
 
 [See it in action](https://chartkick.com/mapkick)
 
-:fire: For static maps, check out [Mapkick Static](https://github.com/ankane/mapkick-static), and for charts, check out [Chartkick](https://chartkick.com)
+🔥 For static maps, check out [Mapkick Static](https://github.com/ankane/mapkick-static), and for charts, check out [Chartkick](https://chartkick.com)
 
 [![Build Status](https://github.com/ankane/mapkick/workflows/build/badge.svg?branch=master)](https://github.com/ankane/mapkick/actions)
 
@@ -172,6 +172,12 @@ Zoom and controls
 
 ```erb
 <%= js_map data, zoom: 15, controls: true %>
+```
+
+Hash (To sync zoom, center latitude, center longitude, bearing, and pitch with the hash fragment of the page's URL)
+
+```javascript
+new Mapkick.Map("map", data, { hash: true })
 ```
 
 Refresh data from a remote source every `n` seconds
