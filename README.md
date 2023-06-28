@@ -188,6 +188,14 @@ To set options for all of your maps, create an initializer `config/initializers/
 Mapkick.options[:height] = "400px"
 ```
 
+Or in a Rails style:
+
+```ruby
+Mapkick.configure do |config|
+  config.height = "400px"
+end
+```
+
 ## Sinatra and Padrino
 
 Download [mapkick.bundle.js](https://raw.githubusercontent.com/ankane/mapkick/master/vendor/assets/javascripts/mapkick.bundle.js) and include it manually.

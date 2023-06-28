@@ -114,7 +114,16 @@ class MapTest < Minitest::Test
     Mapkick.options = {id: "test-123"}
     assert_match "id=\"test-123\"", js_map(@data)
   ensure
-    Mapkick.options = {}
+    Mapkick.options = OpenStruct.new
+  end
+
+  def test_default_options_by_block
+    Mapkick.configure do |config|
+      config.id = "test-123"
+    end
+    assert_match "id=\"test-123\"", js_map(@data)
+  ensure
+    Mapkick.options = OpenStruct.new
   end
 
   def test_map_ids

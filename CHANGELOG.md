@@ -1,3 +1,13 @@
+## 0.1.5 (2023-03-11)
+
+- Add ability to configure Mapkick like Rails by block:
+
+```ruby
+Mapkick.configure do |config|
+  config.height = "400px"
+end
+```
+
 ## 0.1.4 (2023-03-11)
 
 - Updated Mapkick.js to 0.2.5

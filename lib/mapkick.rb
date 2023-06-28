@@ -21,7 +21,14 @@ module Mapkick
   class Error < StandardError; end
 
   class << self
-    attr_accessor :options
+    attr_writer :options
+
+    def options
+      @options ||= OpenStruct.new
+    end
+
+    def configure
+      yield options
+    end
   end
-  self.options = {}
 end
