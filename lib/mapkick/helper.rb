@@ -12,7 +12,7 @@ module Mapkick
 
     # don't break out options since need to merge with default options
     def mapkick_map(type, data_source, **options)
-      options = Mapkick::Utils.deep_merge(Mapkick.options, options)
+      options = Mapkick::Utils.deep_merge(Mapkick.options, options).to_h
 
       @mapkick_map_id ||= 0
       element_id = options.delete(:id) || "map-#{@mapkick_map_id += 1}"
