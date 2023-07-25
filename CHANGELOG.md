@@ -1,6 +1,7 @@
-## 0.1.5 (unreleased)
+## 0.1.5 (2023-07-24)
 
 - Updated Mapkick.js to 0.2.6
+- Support for area maps is no longer experimental
 
 ## 0.1.4 (2023-03-11)
 

@@ -85,7 +85,7 @@ Point map
 <%= js_map [{latitude: 37.7829, longitude: -122.4190}] %>
 ```
 
-Area map (experimental)
+Area map
 
 ```erb
 <%= area_map [{geometry: {type: "Polygon", coordinates: ...}}] %>
@@ -180,7 +180,7 @@ Refresh data from a remote source every `n` seconds
 <%= js_map url, refresh: 60 %>
 ```
 
-Pass options directly to the mapping library [unreleased]
+Pass options directly to the mapping library
 
 ```erb
 <%= js_map data, library: {hash: true} %>
