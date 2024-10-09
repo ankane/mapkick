@@ -4,7 +4,7 @@ module Mapkick
 
     # for importmap
     initializer "mapkick.importmap" do |app|
-      if defined?(Importmap)
+      if app.config.respond_to?(:assets) && defined?(Importmap) && defined?(Sprockets)
         app.config.assets.precompile << "mapkick.bundle.js"
       end
     end
