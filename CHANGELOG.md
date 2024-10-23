@@ -1,3 +1,7 @@
+## 0.2.0 (unreleased)
+
+- Dropped support for Ruby < 3.1
+
 ## 0.1.5 (2023-07-24)
 
 - Updated Mapkick.js to 0.2.6
