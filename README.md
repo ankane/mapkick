@@ -22,7 +22,6 @@ Then follow the instructions for your JavaScript setup:
 
 - [Importmap](#importmap) (Rails 7+ default)
 - [esbuild, rollup.js, or Webpack](#esbuild-rollupjs-or-webpack)
-- [Webpacker](#webpacker) (Rails 6 default)
 - [Sprockets](#sprockets)
 
 ### Importmap
@@ -54,20 +53,6 @@ import "mapkick/bundle"
 ```
 
 Note: For rollup.js, this requires `format: "iife"` in `rollup.config.js`.
-
-### Webpacker
-
-Run:
-
-```sh
-yarn add mapkick
-```
-
-And in `app/javascript/packs/application.js`, add:
-
-```js
-import "mapkick/bundle"
-```
 
 ### Sprockets
 
