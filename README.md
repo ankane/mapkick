@@ -21,7 +21,7 @@ Mapkick uses [Mapbox GL JS v1](https://github.com/mapbox/mapbox-gl-js/tree/v1.13
 Then follow the instructions for your JavaScript setup:
 
 - [Importmap](#importmap) (Rails 7+ default)
-- [esbuild, rollup.js, or Webpack](#esbuild-rollupjs-or-webpack)
+- [Bun, esbuild, rollup.js, or Webpack](#bun-esbuild-rollupjs-or-webpack)
 - [Sprockets](#sprockets)
 
 ### Importmap
@@ -38,11 +38,13 @@ And in `app/javascript/application.js`, add:
 import "mapkick/bundle"
 ```
 
-### esbuild, rollup.js, or Webpack
+### Bun, esbuild, rollup.js, or Webpack
 
 Run:
 
 ```sh
+bun add mapkick
+# or
 yarn add mapkick
 ```
 
