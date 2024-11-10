@@ -20,7 +20,7 @@ Mapkick uses [Mapbox GL JS v1](https://github.com/mapbox/mapbox-gl-js/tree/v1.13
 
 Then follow the instructions for your JavaScript setup:
 
-- [Importmap](#importmap) (Rails 7 default)
+- [Importmap](#importmap) (Rails 7+ default)
 - [esbuild, rollup.js, or Webpack](#esbuild-rollupjs-or-webpack)
 - [Webpacker](#webpacker) (Rails 6 default)
 - [Sprockets](#sprockets)
