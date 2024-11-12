@@ -54,8 +54,6 @@ And in `app/javascript/application.js`, add:
 import "mapkick/bundle"
 ```
 
-Note: For rollup.js, this requires `format: "iife"` in `rollup.config.js`.
-
 ### Sprockets
 
 In `app/assets/javascripts/application.js`, add:
